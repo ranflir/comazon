@@ -13,14 +13,34 @@ datasource db {
   provider = "postgresql"
 }
 
+// model User {
+//   id        String @id @default(uuid()) //attribute 필드에 대한 추가정보
+//   email     String @unique
+//   firstName String
+//   lastName  String
+//   address   String // ? NULL  nullable컬럼
+//   //shift + alt + F -> 자동포맷팅
+//   createdAt DateTime @default(now()) //거의 모든 모델에 들어간다
+//   updatedAt DateTime @updatedAt
+// }
+
 model User {
-  id        String @id @default(uuid()) //attribute 필드에 대한 추가정보
-  email     String @unique
-  firstName String
-  lastName  String
-  address   String // ? NULL  nullable컬럼
-  //shift + alt + F -> 자동포맷팅
-  createdAt DateTime @default(now()) //거의 모든 모델에 들어간다
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  category    Category
+  price       Float
+  stock       Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
+enum Category {
+  FASHION
+  BEAUTY
+  SPORTS
+  ELECTRONICS
+  HOME_INTERIOR
+  HOUSEHOLD_SUPPLIES
+  KITCHENWARE
+}
