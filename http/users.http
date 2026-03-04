@@ -5,6 +5,12 @@ GET http://localhost:3000/users
 GET http://localhost:3000/users/b33307449-88a8-4535-8450-79a3661b3d41
 
 ###
+GET http://localhost:3000/users?order=oldest
+
+###
+GET http://localhost:3000/users?limit=2&offset=2&order=oldest
+
+###
 
 POST http://localhost:3000/users
 Content-Type: application/json

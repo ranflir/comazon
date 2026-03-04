@@ -13,8 +13,23 @@ const app = express();
 app.use(express.json());
 
 app.get('/users', async (req, res, next) => {
+  const { offset = 0, limit = 10, order = 'newest' } = req.query;
+  let orderBy;
+  switch (order) {
+    case 'oldest':
+      orderBy = { createdAt: 'asc' };
+      break;
+    case 'newest':
+    default:
+      orderBy = { createdAt: 'desc' };
+  }
+
   try {
-    const users = await prisma.user.findMany();
+    const users = await prisma.user.findMany({
+      orderBy,
+      skip: parseInt(offset),
+      take: parseInt(limit),
+    });
     res.send(users);
   } catch (error) {
     next(error);
@@ -86,10 +101,12 @@ app.delete('/users/:id', async (req, res, next) => {
 app.use((err, req, res, next) => {
   console.error(err);
   const status = err.status || 500;
-  res.status(status).send({ 
+  res.status(status).send({
     message: err.message || '서버 내부 오류가 발생했습니다.',
-    code: err.code 
+    code: err.code,
   });
 });
 
-app.listen(process.env.PORT || 3000, () => console.log('서버가 시작되었습니다.'));
+app.listen(process.env.PORT || 3000, () =>
+  console.log('서버가 시작되었습니다.'),
+);
